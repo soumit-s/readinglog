@@ -22,6 +22,11 @@ func init() {
 	App.POST(SignInPath, HandleLogin)
 	App.GET("/show_cookies", HandleShowCookies)
 	App.GET(FetchUserDataPath, HandleFetchCurrentUser)
+	App.POST(CreateLogPath, HandleCreateLog)
+	App.POST(EditUserInfoPath, HandleEditUserInfo)
+	App.GET(FetchLogsPath, HandleFetchLogs)
+	App.DELETE(DeleteLogPath, HandleDeleteLog)
+	App.GET(FetchLogPath, HandleFetchLog)
 }
 
 // Sets-Up the CORS middleware.
