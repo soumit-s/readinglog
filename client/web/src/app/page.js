@@ -1,29 +1,16 @@
 'use client'
 
 import NavBar from "@/components/NavBar";
+import { useUserContext } from "@/utils/user";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-
-    const [userData, setUserData] = useState()
-
-    // Check if a user session exists. If it exists then fetch the user data.
-    useEffect(() => {
-        axios.get('http://localhost:8000/api/user', {withCredentials: true})
-        .then(({ data }) => {
-            if (data.active_user_present && data.authenticated) {
-                setUserData(data.data)
-            }
-        })
-        .catch(console.error)
-    }, [])
-
     return (
         <div className="flex justify-center">
             <div className="sm:w-4/5 md:w-[90%] lg:w-80%] xl:w-[75%] 2xl:w-[65%] min-[1600px]:w-[60%] mt-8">
-                <NavBar userData={userData} />
+                <NavBar />
                 <HeroSection />
             </div>
         </div>
