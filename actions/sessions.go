@@ -1,12 +1,16 @@
 package actions
 
 import (
+	"encoding/json"
 	"errors"
+	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"readinglog.com/db"
 	"readinglog.com/db/models"
+	"readinglog.com/schemas"
 )
 
 // Starts a new user session and returns the session
@@ -52,4 +56,31 @@ func EndSession(session *models.Session) bool {
 		Strength: "UPDATE",
 	}).Table("sessions").Delete(session)
 	return r.Error != nil
+}
+
+// Returns the current session if present. The
+// session is stored in the "session" cookie.
+// It does not check whether the session is valid.
+func GetCurrentSessionFromCtx(c *gin.Context) *models.Session {
+	s, err := c.Cookie("session")
+	if err == nil {
+		session := models.Session{}
+
+		if err = json.Unmarshal([]byte(s), &session); err == nil {
+			return &session
+		}
+	}
+
+	return nil
+}
+
+func HandleCurrentSessionFromCtx(c *gin.Context) *models.Session {
+	session := GetCurrentSessionFromCtx(c)
+	if session == nil {
+		c.JSON(http.StatusOK, &schemas.ResponseSchema{
+			Ok:   false,
+			Code: schemas.StatusValidUserSessionNotPresent,
+		})
+	}
+	return session
 }
