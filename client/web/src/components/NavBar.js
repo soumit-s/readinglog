@@ -1,5 +1,7 @@
 import Link from "next/link"
 import UserProfileCard from "./UserProfileCard"
+import { useUserContext } from "@/utils/user"
+import SiteLogo from "./SiteLogo"
 
 const DEFAULT_ACTIONS = {
     'signIn': true,
@@ -11,10 +13,12 @@ const LINKS = [
     { value: "About", href: "/" },
 ]
 
-export default function NavBar({ actions = DEFAULT_ACTIONS, userData }) {
+export default function NavBar({ actions = DEFAULT_ACTIONS }) {
+    const user = useUserContext()
+
     return (
         <nav className="flex justify-between items-center py-4">
-            <div className="font-bold text-lg">Reading Log</div>
+            <div><SiteLogo className="text-lg"/></div>
             <div className="flex items-center gap-8">
                 <div className="flex gap-4">
                     {
@@ -28,11 +32,11 @@ export default function NavBar({ actions = DEFAULT_ACTIONS, userData }) {
                     }
                 </div>
                 {
-                    userData && <UserProfileCard userData={userData} />
+                    user.isPresent && <UserProfileCard userData={user.data} isLoading={user.isLoading}/>
                 }
 
                 {
-                    !userData && <div className="flex gap-4">
+                    !user.isPresent && <div className="flex gap-4">
                         <Link href="/signin" className="text-base normal-button">Login</Link>
                         <Link href="/signup" className="text-base ok-button">Join</Link>
                     </div>
