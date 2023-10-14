@@ -9,4 +9,5 @@ const (
 	FetchLogsPath     = "/api/user/logs"
 	DeleteLogPath     = "/api/log/delete"
 	FetchLogPath      = "/api/log/:lid"
+	UpdateLogPath     = "/api/log/update"
 )

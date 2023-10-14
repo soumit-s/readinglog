@@ -27,6 +27,7 @@ func init() {
 	App.GET(FetchLogsPath, HandleFetchLogs)
 	App.DELETE(DeleteLogPath, HandleDeleteLog)
 	App.GET(FetchLogPath, HandleFetchLog)
+	App.POST(UpdateLogPath, HandleUpdateLog)
 }
 
 // Sets-Up the CORS middleware.

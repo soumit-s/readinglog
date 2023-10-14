@@ -11,6 +11,7 @@ import (
 func HandleFetchLogs(c *gin.Context) {
 	session := actions.GetCurrentSessionFromCtx(c)
 	if session == nil {
+		c.JSON(http.StatusForbidden, schemas.ResponseSchema{Ok: false, Code: schemas.StatusValidUserSessionNotPresent})
 		return
 	}
 
