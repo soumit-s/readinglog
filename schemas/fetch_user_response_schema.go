@@ -14,6 +14,7 @@ type FetchUserDataResponseSchema struct {
 
 type UserDataSchema struct {
 	Name       string `json:"name"`    // Username
+	Bio        string `json:"bio"`     // User Bio
 	Email      string `json:"email"`   // User Email
 	Picture    string `json:"picture"` // Profile Picture URL
 	ProfileURL string `json:"url"`     // User Profile URL
@@ -27,6 +28,7 @@ func (s *FetchUserDataResponseSchema) PopulateUser(user *models.User) {
 	}
 
 	s.Data.Name = user.Name
+	s.Data.Bio = user.Bio
 	s.Data.Email = user.Email
 	s.Data.Picture = ""
 	s.Data.ProfileURL = fmt.Sprintf("/%v", user.ID)
