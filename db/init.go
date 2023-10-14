@@ -6,6 +6,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"readinglog.com/db/models"
 )
 
@@ -32,6 +33,8 @@ func init() {
 	// Migrate the schemas
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Session{})
+	db.AutoMigrate(&models.Log{})
+	db.AutoMigrate(&models.Word{})
 }
 
 func DoesUserExistByEmail(email string) bool {
@@ -47,4 +50,12 @@ func CreateUser(user *models.User) bool {
 	}
 
 	return true
+}
+
+func CreateLog(log *models.Log) bool {
+	return ReadingLog.Clauses(clause.Locking{Strength: "UPDATE"}).Table("logs").Create(log).Error == nil
+}
+
+func GetLog(id uint, log *models.Log) bool {
+	return ReadingLog.Table("logs").Where("owner_id = ?", id).Find(&log).Error == nil
 }
